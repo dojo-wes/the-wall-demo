@@ -1,0 +1,47 @@
+{% extends './layout.html' %}
+{% block body %}
+  <h2>The Wall</h2>
+  <div class="post-form">
+    <h3>Create a post on this wall.</h3>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="errors">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form action="/posts/create" method='post'>
+      <textarea name="content" cols="30" rows="10"></textarea>
+      <input type="submit" value="Add Post">
+    </form>
+  </div>
+  <div class="post-container">
+    <h4>Here are all the posts!</h4>
+    {% if data['posts'] %}
+      {% for post in data['posts'] %}
+        <div class="post">
+          <h5>{{ post['first'] }} {{ post['last'] }} -- {{ post['created_at'] }}</h5>
+          <p>{{ post['content'] }}</p>
+          <div class="comment-container">
+            {% if data['comments'] %}
+              {% for comment in data['comments'] %}
+                {% if comment['post_id'] == post['id'] %}
+                  <div class="comment">
+                    <h6>{{ comment['first'] }} {{ comment['last'] }} -- {{ comment['created_at'] }}</h6>
+                    <p>{{ comment['content'] }}</p>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+            <form action="/comments/create/{{ post['id'] }}" method="post">
+              <textarea name="content" cols="30" rows="10"></textarea>
+              <input type="submit" value="Add Post">
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endblock %}

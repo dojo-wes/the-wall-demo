@@ -1,0 +1,9 @@
+.form-container {
+  width: 45%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.errors {
+  color: red;
+}
